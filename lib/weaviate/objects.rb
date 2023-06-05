@@ -57,13 +57,14 @@ module Weaviate
     # Batch create objects
     def batch_create(
       objects:,
+      uuid:,
       consistency_level: nil
     )
       validate_consistency_level!(consistency_level) unless consistency_level.nil?
 
       response = client.connection.post("batch/#{PATH}") do |req|
         req.params["consistency_level"] = consistency_level.to_s.upcase unless consistency_level.nil?
-        req.body = {objects: objects}
+        req.body = {objects: objects, uuid: uuid}
       end
 
       response.body
